@@ -14,7 +14,7 @@ class m180608_102903_task extends Migration
     {
         $this->createTable('task', [
             'id' => $this->primaryKey(),
-            'name' => $this->string()->notNull(),
+            'book_name' => $this->string()->notNull(),
             'original_sugg' => $this->string()->notNull(),
         ]);
 

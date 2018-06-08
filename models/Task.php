@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "task".
  *
  * @property int $id
- * @property string $name
+ * @property string $book_name
  * @property string $original_sugg
  */
 class Task extends \yii\db\ActiveRecord
@@ -27,8 +27,8 @@ class Task extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'original_sugg'], 'required'],
-            [['name', 'original_sugg'], 'string', 'max' => 255],
+            [['book_name', 'original_sugg'], 'required'],
+            [['book_name', 'original_sugg'], 'string', 'max' => 255],
         ];
     }
 
@@ -39,7 +39,7 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'book_name' => 'Book name',
             'original_sugg' => 'Original Sugg',
         ];
     }
