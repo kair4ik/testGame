@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Task;
 use app\models\User;
 use yii\helpers\Url;
 use Yii;
@@ -126,7 +127,21 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
-        return $this->render('about');
+        $status = "";
+        $model = new Task();
+        if($model->load(\Yii::$app->request->post())){
+
+            if ($model->createTasks()) {
+                $status = "Запись успешно сохранена";
+            } else {
+                $status = $model->getErrors();
+            }
+        }
+
+        return $this->render('about',[
+            'model' => $model,
+            'status' => $status,
+        ]);
     }
 
     public function actionAddUser($username, $password) {
