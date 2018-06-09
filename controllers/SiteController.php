@@ -65,7 +65,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $game = Task::getGame();
+
+        return $this->render('index',
+            [
+                'game' => $game,
+            ]);
     }
 
     /**

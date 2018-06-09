@@ -38,7 +38,7 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Домой', 'url' => ['/site/index']],
+            ['label' => 'Игра', 'url' => ['/site/index']],
             (Yii::$app->user->id == 1) ?
             ['label' => 'Админка', 'url' => ['/site/about']] : '',
             ['label' => 'Contact', 'url' => ['/site/contact']],

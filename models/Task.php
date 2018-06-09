@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use Yii;
 
 /**
  * This is the model class for table "task".
@@ -78,6 +77,15 @@ class Task extends \yii\db\ActiveRecord
             return true;
         }
         return false;
+    }
+
+    public static function getGame()
+    {
+        $task = self::find()->one();
+        $wordsForGame = $task->original_sugg;
+        $wordArray = explode(' ',$wordsForGame);
+        shuffle($wordArray);
+        return $wordArray;
     }
 
     public function getGameResult()
