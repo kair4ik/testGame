@@ -29,7 +29,7 @@ $this->title = 'My Yii Application';
 
         width: 100%;
         height: 50px;
-        border: 1px solid gray;
+        border: 1px dotted gray;
         border-radius: 5px;
         padding: 10px;
     }
@@ -41,19 +41,19 @@ $this->title = 'My Yii Application';
         <br>
         <br>
         <div class="suggestion" id="suggestion">
-            <?php
-            foreach ($game as $item) {
-                echo "<span class = 'word' data-word='$item'>$item</span>   ";
-            }
-            ?>
+
         </div>
         <br>
-        <button class="btn btn-success">Проверить</button>
+        <button class="btn btn-success" id="send">Проверить</button>
         <br>
         <br>
 
         <div class="random-words" id="random-word">
-
+            <?php
+            foreach ($game as $item) {
+                echo "<span class = 'word' id='word' data-word='$item'>$item</span>   ";
+            }
+            ?>
         </div>
     </div>
 
@@ -62,6 +62,23 @@ $this->title = 'My Yii Application';
 
 <?php
 $script = <<<JS
+
+    function initMoveWords(){
+        $("div #word").click(function() {
+            
+            parentId = $(this).parent().attr('id');
+            if (parentId == "suggestion") {
+                $("div #random-word").append(this);
+                $("div #random-word").append("   ");
+
+            } else if (parentId == "random-word"){
+                $("div #suggestion").append(this);
+                $("div #suggestion").append("   ");
+            }
+        });
+    }
+    
+   
 
     function getSuggestionFromDivById(id) {
         newSuggestion = '';
@@ -75,12 +92,17 @@ $script = <<<JS
                 newSuggestion += $(value).data("word") + " ";
             }
         });
-        
         return newSuggestion;
     }
     
-    sugg = getSuggestionFromDivById('suggestion');
-    console.log(sugg);
+    initMoveWords();
+    
+    $("#send").click(function() {
+        sugg = getSuggestionFromDivById('suggestion');
+        console.log(sugg);
+    });
+
+    
 JS;
 $this->registerJs($script, View::POS_END);
 ?>
