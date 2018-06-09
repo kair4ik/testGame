@@ -34,9 +34,23 @@ $this->title = 'My Yii Application';
         padding: 10px;
     }
 
+    #gameResultWindow{
+        display: none;
+        width: 300px;
+        height: 300px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -150px 0 0 -150px;
+        background: white;
+        border: 1px solid black;
+        border-radius: 20px ;
+        padding: 10px;
+    }
+
 </style>
 <div class="site-index">
-    <div class="jumbotron">
+    <div class="jumbotron" >
         <h2>Игра "Как бы написал автор?"</h2>
         <?php
         if (!Yii::$app->user->isGuest) {
@@ -60,8 +74,27 @@ $this->title = 'My Yii Application';
         </div>
 
         <?php
+            $bookName = "Исскусво мыслить масштабно";
+//            $games = \app\models\Statistic::find()
+//                ->joinWith('task', true)
+//                ->where(['book_name' => $bookName])
+//                ->andWhere(['user_id' => Yii::$app->user->id])
+//                ->count();
+            $countGames = \app\models\Statistic::getAmountGamesByBook($bookName);
+            echo "<pre>";
+//            echo \app\models\Statistic::getAmountWinForUser();
+            var_dump(\app\models\Statistic::getAverage('loss'));
+            echo "</pre>";
+
         }
         ?>
+
+        <div id="gameResultWindow">
+            <p id="response"></p>
+            <p id="statistic"></p>
+            <button>Закрыть</button>
+        </div>
+
     </div>
 
 </div>
@@ -106,6 +139,10 @@ $script = <<<JS
     
     initMoveWords();
 
+    function getGameResult() {
+        
+    }
+    
     $("#send").click(function() {
         
         suggestion = getSuggestionFromDivById('suggestion');
@@ -119,12 +156,18 @@ $script = <<<JS
                 // alert("Картинка скоро будет загружена");
             },
             success: function(data) {
+                $('#gameResultWindow').show();
+                $('#response').text(data);
                 console.log(data);
             }
 	});
         
         
     });
+    
+     $('#gameResultWindow button').click(function() {
+       $(this).parent().hide();
+     });
 
     
 JS;

@@ -2,8 +2,10 @@
 
 namespace app\controllers;
 
+use app\models\Statistic;
 use app\models\Task;
 use app\models\User;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use Yii;
 use yii\filters\AccessControl;
@@ -172,6 +174,12 @@ class SiteController extends Controller
         echo $result;
     }
 
+    public function actionGetStat() {
+        $stat = Statistic::getStatistic();
+        $response = Json::encode($stat);
+        return $response;
+
+    }
 
 
 }
