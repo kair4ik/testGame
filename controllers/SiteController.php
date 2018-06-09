@@ -165,4 +165,13 @@ class SiteController extends Controller
         }
     }
 
+    public function actionGetResult($gameId,$suggestion)
+    {
+        $game = Task::findOne(['id'=>$gameId]);
+        $result = $game->getGameResult($suggestion);
+        echo $result;
+    }
+
+
+
 }

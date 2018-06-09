@@ -46,4 +46,13 @@ class Statistic extends \yii\db\ActiveRecord
             'game_result' => 'Game Result',
         ];
     }
+
+
+    public static function saveGameResult($gameId,$result){
+        $statistic = new self();
+        $statistic->task_id = $gameId;
+        $statistic->user_id = Yii::$app->user->id;
+        $statistic->game_result = $result;
+        $statistic->save();
+    }
 }

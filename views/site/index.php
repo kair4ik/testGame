@@ -38,6 +38,9 @@ $this->title = 'My Yii Application';
 <div class="site-index">
     <div class="jumbotron">
         <h2>Игра "Как бы написал автор?"</h2>
+        <?php
+        if (!Yii::$app->user->isGuest) {
+        ?>
         <br>
         <br>
         <div class="suggestion" id="suggestion">
@@ -50,17 +53,23 @@ $this->title = 'My Yii Application';
 
         <div class="random-words" id="random-word">
             <?php
-            foreach ($game as $item) {
+            foreach ($game['words'] as $item) {
                 echo "<span class = 'word' id='word' data-word='$item'>$item</span>   ";
             }
             ?>
         </div>
+
+        <?php
+        }
+        ?>
     </div>
 
 </div>
 
 
 <?php
+
+$gameId = $game['id'];
 $script = <<<JS
 
     function initMoveWords(){
@@ -96,10 +105,25 @@ $script = <<<JS
     }
     
     initMoveWords();
-    
+
     $("#send").click(function() {
-        sugg = getSuggestionFromDivById('suggestion');
-        console.log(sugg);
+        
+        suggestion = getSuggestionFromDivById('suggestion');
+        console.log(suggestion);
+        gameId = $gameId;
+        
+        $.ajax({
+            type: 'post',
+            url:'index.php?r=site/get-result&gameId='+gameId+'&suggestion='+suggestion,
+            beforeSend: function (msg) {
+                // alert("Картинка скоро будет загружена");
+            },
+            success: function(data) {
+                console.log(data);
+            }
+	});
+        
+        
     });
 
     

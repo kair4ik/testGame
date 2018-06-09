@@ -81,15 +81,30 @@ class Task extends \yii\db\ActiveRecord
 
     public static function getGame()
     {
+        $result = [];
         $task = self::find()->one();
         $wordsForGame = $task->original_sugg;
         $wordArray = explode(' ',$wordsForGame);
         shuffle($wordArray);
-        return $wordArray;
+        $result['id'] = $task->id;
+        $result['words'] = $wordArray;
+        return $result;
     }
 
-    public function getGameResult()
+    public function getGameResult($suggestion)
     {
+        $result = "";
+        if ($this->original_sugg == $suggestion) {
+            $result = "win";
+            Statistic::saveGameResult($this->id,$result);
+            return "Вы распознали замысел автора";
+        } else {
+            $result = "loss";
+            Statistic::saveGameResult($this->id,$result);
+            return "Увы, но автор думал иначе";
+        }
 
     }
+
+
 }
