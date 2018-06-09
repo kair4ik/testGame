@@ -117,7 +117,6 @@ class Statistic extends \yii\db\ActiveRecord
         return array_unique($result);
     }
 
-
     /*
      * Cреднее число побед, это победы всех пользователей деленные на их кол-во
      * */

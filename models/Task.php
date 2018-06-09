@@ -50,6 +50,9 @@ class Task extends \yii\db\ActiveRecord
         ];
     }
 
+    /*
+     * Создаем задания
+     * */
     public function createTasks()
     {
         $arrayOfTask = explode('.', $this->text);
@@ -64,6 +67,9 @@ class Task extends \yii\db\ActiveRecord
         return true;
     }
 
+    /*
+     * Проверяем предложение на корректность размера
+     * */
     public static function isCorrectSize($suggestion) {
         $wordArray = explode(' ', trim($suggestion));
         if(sizeof($wordArray) > 3) {
@@ -72,6 +78,9 @@ class Task extends \yii\db\ActiveRecord
         return false;
     }
 
+    /*
+     * Создаем задание
+     * */
     public static function createTask($book_name, $suggestion) {
         $task = new self();
         $task->book_name = $book_name;
@@ -82,6 +91,9 @@ class Task extends \yii\db\ActiveRecord
         return false;
     }
 
+    /*
+     * Получаем игру
+     * */
     public static function getGame()
     {
 
@@ -101,6 +113,9 @@ class Task extends \yii\db\ActiveRecord
         return $result;
     }
 
+    /*
+     * Получаем результат игры
+     * */
     public function getGameResult($suggestion)
     {
         $response = [];
