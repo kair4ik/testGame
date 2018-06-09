@@ -99,17 +99,21 @@ class Task extends \yii\db\ActiveRecord
 
         $lastGame = Statistic::find()->where(['user_id'=>\Yii::$app->user->id, 'game_result' =>'win'])->orderBy('id DESC')->one();
         $result = [];
-        if (!empty($lastGame) && ($lastGame !== null)){
+        if (!empty($lastGame) || ($lastGame !== null)){
             $task = self::find()->where(['id'=>($lastGame->task_id +1)])->one();
         } else {
             $task = self::find()->one();
         }
+        $result['id'] = "";
+        $result['words'] = "";
+        if ($task) {
+            $wordsForGame = $task->original_sugg;
+            $wordArray = explode(' ',$wordsForGame);
+            shuffle($wordArray);
+            $result['id'] = $task->id;
+            $result['words'] = $wordArray;
+        }
 
-        $wordsForGame = $task->original_sugg;
-        $wordArray = explode(' ',$wordsForGame);
-        shuffle($wordArray);
-        $result['id'] = $task->id;
-        $result['words'] = $wordArray;
         return $result;
     }
 
