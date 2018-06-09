@@ -3,6 +3,9 @@
 namespace app\models;
 
 
+use yii\helpers\Json;
+
+
 /**
  * This is the model class for table "task".
  *
@@ -81,8 +84,15 @@ class Task extends \yii\db\ActiveRecord
 
     public static function getGame()
     {
+
+        $lastGame = Statistic::find()->where(['user_id'=>\Yii::$app->user->id, 'game_result' =>'win'])->orderBy('id DESC')->one();
         $result = [];
-        $task = self::find()->one();
+        if (!empty($lastGame)){
+            $task = self::find()->where(['id'=>($lastGame->task_id +1)])->one();
+        } else {
+            $task = self::find()->one();
+        }
+
         $wordsForGame = $task->original_sugg;
         $wordArray = explode(' ',$wordsForGame);
         shuffle($wordArray);
@@ -93,15 +103,20 @@ class Task extends \yii\db\ActiveRecord
 
     public function getGameResult($suggestion)
     {
+        $response = [];
         $result = "";
         if ($this->original_sugg == $suggestion) {
             $result = "win";
             Statistic::saveGameResult($this->id,$result);
-            return "Вы распознали замысел автора <br><br>".$this->original_sugg;
+            $response['status'] = $result;
+            $response['text'] = "Вы распознали замысел автора <br><br>".$this->original_sugg;
+            return Json::encode($response);
         } else {
             $result = "loss";
             Statistic::saveGameResult($this->id,$result);
-            return "Увы, но автор думал иначе <br> <br>".$this->original_sugg;
+            $response['status'] = $result;
+            $response['text'] = "Увы, но автор думал иначе <br><br>".$this->original_sugg;
+            return Json::encode($response);
         }
 
     }

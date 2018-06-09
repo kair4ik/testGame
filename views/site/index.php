@@ -51,6 +51,7 @@ $this->title = 'My Yii Application';
 </style>
 <div class="site-index">
     <div class="jumbotron" >
+        <h3><?=$game['id']?></h3>
         <h2>Игра "Как бы написал автор?"</h2>
         <?php
         if (!Yii::$app->user->isGuest) {
@@ -86,7 +87,8 @@ $this->title = 'My Yii Application';
         <div id="gameResultWindow">
             <p id="response"></p>
             <p id="statistic"></p>
-            <button>Закрыть</button>
+            <button id='close'>Закрыть</button>
+            <button id='next'>Следующее задание</button>
         </div>
 
     </div>
@@ -150,8 +152,17 @@ $script = <<<JS
                 // alert("Картинка скоро будет загружена");
             },
             success: function(data) {
+                response = JSON.parse(data);
                 $('#gameResultWindow').show();
-                $('#response').html(data);
+                $('#response').html(response.text);
+                
+                if (response.status == 'loss') {
+                    $("#next").hide();
+                    $("#close").show();
+                } else if (response.status == 'win') {
+                    $("#close").hide();
+                    $("#next").show();
+                }
                 console.log(data);
                 
                 $.ajax({
@@ -175,10 +186,16 @@ $script = <<<JS
         
     });
     
-     $('#gameResultWindow button').click(function() {
+     
+     $('#gameResultWindow #close').click(function() {
        $(this).parent().hide();
      });
-
+    
+     
+     $('#gameResultWindow #next').click(function() {
+       location.reload();
+     });
+     
     
 JS;
 $this->registerJs($script, View::POS_END);
