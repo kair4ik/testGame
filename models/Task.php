@@ -97,11 +97,11 @@ class Task extends \yii\db\ActiveRecord
         if ($this->original_sugg == $suggestion) {
             $result = "win";
             Statistic::saveGameResult($this->id,$result);
-            return "Вы распознали замысел автора";
+            return "Вы распознали замысел автора <br><br>".$this->original_sugg;
         } else {
             $result = "loss";
             Statistic::saveGameResult($this->id,$result);
-            return "Увы, но автор думал иначе";
+            return "Увы, но автор думал иначе <br> <br>".$this->original_sugg;
         }
 
     }

@@ -36,16 +36,16 @@ $this->title = 'My Yii Application';
 
     #gameResultWindow{
         display: none;
-        width: 300px;
-        height: 300px;
+        width: 700px;
+        height: 400px;
         position: absolute;
         top: 50%;
         left: 50%;
-        margin: -150px 0 0 -150px;
+        margin: -200px 0 0 -350px;
         background: white;
         border: 1px solid black;
         border-radius: 20px ;
-        padding: 10px;
+        padding: 20px;
     }
 
 </style>
@@ -74,17 +74,11 @@ $this->title = 'My Yii Application';
         </div>
 
         <?php
-            $bookName = "Исскусво мыслить масштабно";
-//            $games = \app\models\Statistic::find()
-//                ->joinWith('task', true)
-//                ->where(['book_name' => $bookName])
-//                ->andWhere(['user_id' => Yii::$app->user->id])
-//                ->count();
-            $countGames = \app\models\Statistic::getAmountGamesByBook($bookName);
-            echo "<pre>";
-//            echo \app\models\Statistic::getAmountWinForUser();
-            var_dump(\app\models\Statistic::getAverage('loss'));
-            echo "</pre>";
+//            $bookName = "Исскусво мыслить масштабно";
+//            $countGames = \app\models\Statistic::getAmountGamesByBook($bookName);
+//            echo "<pre>";
+//            var_dump(\app\models\Statistic::getAverage('loss'));
+//            echo "</pre>";
 
         }
         ?>
@@ -157,10 +151,26 @@ $script = <<<JS
             },
             success: function(data) {
                 $('#gameResultWindow').show();
-                $('#response').text(data);
+                $('#response').html(data);
                 console.log(data);
+                
+                $.ajax({
+                    type: 'post',
+                    url:'index.php?r=site/get-stat',
+                    beforeSend: function (msg) {
+                    },
+                    success: function(data) {
+                        var stat = JSON.parse(data);
+                        $("#statistic").html(data);
+                        console.log(stat);
+                    }
+	            });
+                
+                
+                
+                
             }
-	});
+	    });
         
         
     });
