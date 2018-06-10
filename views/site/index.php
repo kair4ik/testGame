@@ -91,14 +91,8 @@ $script = <<<JS
                         console.log(stat);
                     }
 	            });
-                
-                
-                
-                
             }
 	    });
-        
-        
     });
     
      
