@@ -11,7 +11,9 @@ $this->title = 'My Yii Application';
 
 <div class="site-index">
     <div class="jumbotron" >
-        <h3><?=$game['id']?></h3>
+        <h3><?php
+           echo  isset($game['id']) ? $game['id'] : 'Подождите немного админ еще не добавил задания';
+            ?></h3>
         <h2>Игра "Как бы написал автор?"</h2>
         <?php
         if (!Yii::$app->user->isGuest) {
@@ -28,9 +30,12 @@ $this->title = 'My Yii Application';
 
             <div class="random-words" id="random-word">
                 <?php
-                foreach ($game['words'] as $item) {
-                    echo "<span class = 'word' id='word' data-word='$item'>$item</span>   ";
+                if ($game['words'] != null) {
+                    foreach ($game['words'] as $item) {
+                        echo "<span class = 'word' id='word' data-word='$item'>$item</span>   ";
+                    }
                 }
+
                 ?>
             </div>
             <div id="gameResultWindow">
